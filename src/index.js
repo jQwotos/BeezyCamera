@@ -6,7 +6,7 @@ import "@tensorflow/tfjs";
 import "./styles.css";
 import "./components/Firebase/firebase";
 import { database } from "./components/Firebase/firebase";
-import { Checkbox, Input } from '@material-ui/core';
+import { Checkbox, Input, MenuItem, Select } from '@material-ui/core';
 import styled from 'styled-components';
 
 const MainBox = styled.div`
@@ -28,7 +28,11 @@ class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
+          roomLocation: "",
           sending: false,
+          maxCapacity: 50,
+          building: "",
+
       }
   }
 
@@ -109,6 +113,7 @@ class App extends React.Component {
       const target = evt.target;
       const name = target.name;
       const value = target.type === 'checkbox' ? target.checked : target.value;
+
       this.setState({
           [name]: value
       });
@@ -139,8 +144,19 @@ class App extends React.Component {
           height="500"
         />
         <MainBox>
-            <Input name="roomLocation" value={this.state.roomLocation} onChange={evt => this.handleInputChange(evt)} />
-            <Checkbox name="sending" type="checkbox" checked={this.state.sending} onChange={this.handleInputChange}></Checkbox>
+            <Input variant="outlined" helperText="Room Location" name="roomLocation" value={this.state.roomLocation} onChange={evt => this.handleInputChange(evt)} />
+            <Input variant="outlined" helperText="Max Capacity" name="maxCapacity" value={this.state.maxCapacity} onChange={evt => this.handleInputChange(evt)} />
+            <Input variant="outlined" helperText="Building" name="building" value={this.state.building} onChange={evt => this.handleInputChange(evt)} />
+            <Select
+              value={this.state.type}
+              onChange={evt => this.handleInputChange(evt)}
+            >
+            <MenuItem value={"business"}>Business</MenuItem>
+            <MenuItem value={"room"}>Room</MenuItem>
+            <MenuItem value={"lectureHalls"}>Lecture Halls</MenuItem>
+            <MenuItem value={"seating"}>Seating (outside)</MenuItem>
+            </Select>
+            <Checkbox name="sending" type="checkbox" checked={this.state.sending} onChange={evt => this.handleInputChange(evt)}></Checkbox>
             <p>Current Status: {this.state.sending ? "Sending" : "PAUSED"}</p>
         </MainBox>
       </div>
